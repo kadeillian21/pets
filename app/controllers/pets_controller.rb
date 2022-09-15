@@ -13,16 +13,12 @@ class PetsController < ApplicationController
   end
 
   def create
-    @pet = Pet.new(
-      name: params[:pet][:name],
-      breed: params[:pet][:breed],
-      image: params[:pet][:image],
-    )
+    @pet = Pet.new(pet_params)
 
     if @pet.save
       redirect_to "/pets/#{@pet.id}"
     else
-      render json: { message: "L" }
+      render :new, status: :unprocessable_entity
     end
   end
 
@@ -36,13 +32,22 @@ class PetsController < ApplicationController
     @pet.name = params[:pet][:name] || @pet.name
     @pet.breed = params[:pet][:breed] || @pet.breed
     @pet.image = params[:pet][:image] || @pet.image
-    @pet.save
-    redirect_to "/pets/#{@pet.id}"
+    if @pet.save
+      redirect_to "/pets/#{@pet.id}"
+    else
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def destroy
     @pet = Pet.find_by(id: params[:id])
     @pet.destroy
     redirect_to "/pets", status: :see_other
+  end
+
+  private
+
+  def pet_params
+    params.require(:pet).permit(:name, :breed, :image)
   end
 end
