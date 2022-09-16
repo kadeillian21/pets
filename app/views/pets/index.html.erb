@@ -1,7 +1,11 @@
 <h1>All Pets!</h1>
+<div class="carousel-item">
 <% @pets.each do |pet|%>
-  <h2><%= pet.name %></h2>
-  <p>Breed: <%= pet.breed %></p>
-  <p>Image: <img src="<%= pet.image %>"></p>
-  <%= link_to pet.name, pet %>
+  <img src="<%= pet.image %>" alt="...">
+  <div class="carousel-caption d-none d-md-block">
+    <h2><%= pet.name %></h2>
+    <p>Breed: <%= pet.breed %></p>
+    <%= link_to pet.name, pet %>
+  </div>
 <% end %>
+</div>
